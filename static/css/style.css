@@ -1,0 +1,36 @@
+body {
+    padding-top: 70px;
+}
+
+.logo-empresa {
+    padding-top: 5px;
+}
+
+.login {
+    margin-top: 50px;
+}
+
+.form-login {
+    width: 30%;
+    margin: 0 auto;
+}
+
+.btn-primary {
+    color: #fff;
+    background-color: #54bceb;
+    border-color: #54bceb;
+}
+
+.btn-primary:hover {
+    color: #f6fafc;
+    background-color: #44acdb;
+    border-color: #44acdb;
+}
+
+.btn-link {
+    color: #54bceb;
+}
+
+.btn-link:hover {
+    color: #44acdb;
+}

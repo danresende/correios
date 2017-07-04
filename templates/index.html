@@ -1,0 +1,108 @@
+{% extends "base/layout.html" %}
+{% block title %}Objetos{% endblock %}
+{% block content %}
+
+<div class="row">
+    <div class="container">
+        <div class="panel panel-info">
+            <div class="panel-heading text-center">
+                OBJETOS POSTADOS
+            </div>
+            <div class="table-responsive">
+                <table class="table table-bordered table-hover">
+                    <tr>
+                        <th>Nota Fiscal</th>
+                        <th>Código do cliente</th>
+                        <th>Nome do Cliente</th>
+                        <th>Data da postagem</th>
+                        <th>Código da postagem</th>
+                        <th>Última atualização</th>
+                        <th>Status</th>
+                        <th></th>
+                        <th></th>
+                    </tr>
+                    {% for objeto in objetos %}
+                    <tr>
+                        <td id="nf_{{ objeto['codigo'] }}">{{ objeto['nota_fiscal'] }}</td>
+                        <td id="cod_cli_{{ objeto['codigo'] }}">{{ objeto['cod_cliente'] }}</td>
+                        <td id="nome_cli_{{ objeto['codigo'] }}">{{ objeto['nome_cliente'] }}</td>
+                        <td id="dt_{{ objeto['codigo'] }}">{{ objeto['data_postagem'] }}</td>
+                        <td id="cod_{{ objeto['codigo'] }}">{{ objeto['codigo'] }}</td>
+                        <td id="ult_at_{{ objeto['codigo'] }}">{{ objeto['ult_atual'] }}</td>
+                        <td id="stat_{{ objeto['codigo'] }}">{{ objeto['status'] }}</td>
+                        <td>
+                            <a href="#" class="atualizarStatus">
+                                <i class="fa fa-refresh" id="{{ objeto['codigo'] }}" aria-hidden="true"></i>
+                            </a>
+                        </td>
+                        <td>
+                            <a href="{{ url_for('altera_objeto', codigo=objeto['codigo']) }}">
+                                <i class="fa fa-trash-o" aria-hidden="true"></i>
+                            </a>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+<br>
+
+<!-- Modal para incluir novo objeto -->
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title text-center" id="myModalLabel">Novo objeto</h4>
+      </div>
+      <div class="modal-body">
+          <form class="" action="{{ url_for('objetos') }}" method="POST">
+              <div class="form-group">
+                  <input class="form-control" type="text" name="notaFiscal" placeholder="Nota Fiscal" required>
+              </div>
+              <div class="form-group">
+                  <input class="form-control" type="text" name="codCliente" placeholder="Código do cliente" required>
+              </div>
+              <div class="form-group">
+                  <input class="form-control" type="text" name="nomeCliente" placeholder="Nome do cliente" required>
+              </div>
+              <div class="form-group">
+                  <input class="form-control" type="date" name="dataPostagem" placeholder="Data de postagem" required>
+              </div>
+              <div class="form-group">
+                  <input class="form-control" type="text" name="codigo" placeholder="Código de rastreio" required>
+              </div>
+              <div class="form-group text-center">
+                  <button type="button" class="btn btn-md btn-default" data-dismiss="modal">Cancelar</button>
+                  <button type="submit" class="btn btn-md btn-primary"> Incluir </button>
+              </div>
+          </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Script para obter status do objeto -->
+<script type="text/javascript">;
+    $(".atualizarStatus").on("click", function(e){
+		var codigo = e.target.id;
+        console.log(e);
+        var $SCRIPT_ROOT = {{ request.script_root|tojson|safe }};
+        var url = $SCRIPT_ROOT + "/objetos/" + codigo
+        console.log(url);
+        $.ajax({
+            type: "POST",
+            url: url,
+            dataType: 'json',
+            success: function(data){
+                var ult_atual_id = "#ult_at_" + codigo;
+                var status_id = "#stat_" + codigo;
+                $(ult_atual_id).text(data.ult_atual);
+                $(status_id).text(data.status);
+            }
+        });
+    });
+</script>
+{% endblock %}

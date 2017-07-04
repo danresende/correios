@@ -1,0 +1,50 @@
+<!doctype html>
+<html>
+    <head>
+        {% block head %}
+        <title>{% block title %}{% endblock %} - Correios</title>
+        <!-- <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}"> -->
+        <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+        <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/style.css') }}">
+        <script type="text/javascript" src="{{ url_for('static', filename='js/jquery-3.2.1.min.js') }}"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+        <script src="https://use.fontawesome.com/13993059a0.js"></script>
+        {% endblock %}
+    </head>
+    <body>
+        <header>
+            <nav class="navbar navbar-default navbar-fixed-top">
+                <div class="container">
+                    <div class="navbar-header">
+                        <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+                            <span class="sr-only">Toggle navigation</span>
+                            <span class="icon-bar"></span>
+                            <span class="icon-bar"></span>
+                            <span class="icon-bar"></span>
+                        </button>
+                        <img class="logo-empresa" src="http://www.biomedidas.com.br/img/lgm/biomed-logo-480.png" alt="Biomed">
+                    </div>
+                    {% if current_user.is_authenticated %}
+                    <!-- Collect the nav links, forms, and other content for toggling -->
+                    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                      <ul class="nav navbar-nav navbar-right">
+                        <li><a href="{{ url_for('logout') }}">Logout</a></li>
+                        <li><button class="btn btn-primary navbar-btn" data-toggle="modal" data-target="#myModal">Novo objeto</button></li>
+                      </ul>
+                    </div><!-- /.navbar-collapse -->
+                    {% endif %}
+                  </div><!-- /.container-fluid -->
+                </nav>
+
+
+
+                </div>
+            </nav>
+        </header>
+        {% block content %}{% endblock %}
+        <br>
+        <footer>
+            <p class="text-center"><i class="fa fa-copyright" aria-hidden="true"></i> 2017 | Biomed | Daniel Resende</p>
+        </footer>
+    </body>
+</html>
