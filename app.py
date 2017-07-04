@@ -26,6 +26,7 @@ __author__ = 'Daniel Resende'
 
 # Iniciaiza o app
 app = Flask(__name__)
+app.config['SECRET_KEY'] = os.environ['SECRET_KEY']
 
 # Conecta ao firebase
 config = {
@@ -224,6 +225,5 @@ def altera_objeto(codigo):
 # Inicia o servidor
 ###############################################################################
 if __name__ == '__main__':
-    app.config['SECRET_KEY'] = os.environ['SECRET_KEY']
     port = int(os.environ.get('PORT', 5000))
     app.run(host='0.0.0.0', port=port)
