@@ -4,6 +4,7 @@
 # Bibliotecas utilizadas
 ###############################################################################
 import os
+import re
 import time
 import xml.etree.ElementTree as ET
 import pyrebase
@@ -146,6 +147,7 @@ def objetos():
         current_user.reset_token()
 
     if request.method == 'POST':
+
         data = {
             'nota_fiscal': request.form['notaFiscal'],
             'cod_cliente': request.form['codCliente'],
@@ -155,6 +157,11 @@ def objetos():
             'ult_atual': request.form['dataPostagem'],
             'status': 'Objeto postado'
         }
+
+        # Acerta formato da data (problema com o Chrome)
+        m = re.search('([0-9]+)-([0-9]+)-([0-9]+)', request.form['dataPostagem']) 
+        if m is not None:
+            data['ult_atual'] = data['data_postagem'] = m.group(3) + '/' + m.group(2) + '/' + m.group(1)
 
         objeto = db.child('objetos')
         objeto = objeto.child(data['codigo'])
