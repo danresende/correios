@@ -6,9 +6,10 @@
 import os
 import re
 import time
+import requests
 import xml.etree.ElementTree as ET
-import pyrebase
 from zeep import Client
+from pyrebase.pyrebase import Firebase, Database, PyreResponse, convert_to_pyre
 from flask import Flask, render_template, request, jsonify, redirect, url_for
 from flask_login import (
     LoginManager,
@@ -29,17 +30,32 @@ __author__ = 'Daniel Resende'
 app = Flask(__name__)
 app.config['SECRET_KEY'] = os.environ['SECRET_KEY']
 
-# Conecta ao firebase
+# Conecta ao firebase corrigindo a função sort()
 config = {
     'apiKey': os.environ['API_KEY'],
     'authDomain': os.environ['APP_DOMAIN'] + '.firebaseapp.com',
     'databaseURL': 'https://' + os.environ['APP_DOMAIN'] + '.firebaseio.com',
     'storageBucket': os.environ['APP_DOMAIN'] + '.appspot.com'
 }
-firebase = pyrebase.initialize_app(config)
+
+class DB(Database):
+    def sort(self, origin, by_key, reverse=False):
+        # unpack pyre objects
+        pyres = origin.each()
+        new_list = []
+        for pyre in pyres:
+            new_list.append(pyre.item)
+        # sort
+        data = sorted(dict(new_list).items(), key=lambda item: item[1][by_key], reverse=reverse)
+        return PyreResponse(convert_to_pyre(data), origin.key())
+
+class FB(Firebase):
+    def database(self):
+        return DB(self.credentials, self.api_key, self.database_url, self.requests)
+
+firebase = FB(config)
 auth = firebase.auth()
 db = firebase.database()
-
 
 # Configura login/logout manager
 login_manager = LoginManager()
@@ -172,6 +188,7 @@ def objetos():
         objetos = db.child('objetos')
         objetos = objetos.order_by_key()
         objetos = objetos.get(current_user.idToken)
+        objetos = db.sort(objetos, 'data_postagem', True)
         for objeto in objetos.each():
             context.append(objeto.val())
     except:
