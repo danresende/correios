@@ -6,7 +6,6 @@
 import os
 import re
 import time
-import requests
 import xml.etree.ElementTree as ET
 from zeep import Client
 from pyrebase.pyrebase import Firebase, Database, PyreResponse, convert_to_pyre
@@ -168,6 +167,8 @@ def objetos():
             'nota_fiscal': request.form['notaFiscal'],
             'cod_cliente': request.form['codCliente'],
             'nome_cliente': request.form['nomeCliente'],
+            'cidade': request.form['cidade'],
+            'uf': request.form['uf'],
             'data_postagem': request.form['dataPostagem'],
             'codigo': request.form['codigo'],
             'ult_atual': request.form['dataPostagem'],
@@ -250,4 +251,4 @@ def altera_objeto(codigo):
 ###############################################################################
 if __name__ == '__main__':
     port = int(os.environ.get('PORT', 5000))
-    app.run(host='0.0.0.0', port=port)
+    app.run(host='0.0.0.0', port=port, debug=True)

@@ -14,6 +14,8 @@
                         <th>Nota Fiscal</th>
                         <th>Código do cliente</th>
                         <th>Nome do Cliente</th>
+                        <th>Cidade</th>
+                        <th>UF</th>
                         <th>Data da postagem</th>
                         <th>Código da postagem</th>
                         <th>Última atualização</th>
@@ -26,6 +28,8 @@
                         <td id="nf_{{ objeto['codigo'] }}">{{ objeto['nota_fiscal'] }}</td>
                         <td id="cod_cli_{{ objeto['codigo'] }}">{{ objeto['cod_cliente'] }}</td>
                         <td id="nome_cli_{{ objeto['codigo'] }}">{{ objeto['nome_cliente'] }}</td>
+                        <td id="cidade_{{ objeto['codigo'] }}">{{ objeto['cidade'] }}</td>
+                        <td id="uf_{{ objeto['codigo'] }}">{{ objeto['uf'] }}</td>
                         <td id="dt_{{ objeto['codigo'] }}">{{ objeto['data_postagem'] }}</td>
                         <td id="cod_{{ objeto['codigo'] }}">{{ objeto['codigo'] }}</td>
                         <td id="ult_at_{{ objeto['codigo'] }}">{{ objeto['ult_atual'] }}</td>
@@ -49,8 +53,7 @@
 </div>
 <br>
 
-<!-- Modal para incluir novo objeto -->
-<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+<!-- Modal para incluir novo objeto --> <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
@@ -58,27 +61,73 @@
         <h4 class="modal-title text-center" id="myModalLabel">Novo objeto</h4>
       </div>
       <div class="modal-body">
-          <form class="" action="{{ url_for('objetos') }}" method="POST">
-              <div class="form-group">
-                  <input class="form-control" type="text" name="notaFiscal" placeholder="Nota Fiscal" required>
+          <div class="row">
+              <div class="container-fluid">
+                  <div class="col-md-12">
+                      <form class="form-horizontal" action="{{ url_for('objetos') }}" method="POST">
+                          <div class="form-group">
+                              <input class="form-control" type="text" name="notaFiscal" placeholder="Nota Fiscal" required>
+                          </div>
+                          <div class="form-group">
+                              <input class="form-control" type="text" name="codCliente" placeholder="Código do cliente" required>
+                          </div>
+                          <div class="form-group">
+                              <input class="form-control" type="text" name="nomeCliente" placeholder="Nome do cliente" required>
+                          </div>
+                          <div class="form-group">
+                              <input class="form-control" type="date" name="dataPostagem" placeholder="Data de postagem" required>
+                          </div>
+                          <div class="form-group">
+                              <div class="row">
+                                  <div class="col-md-10">
+                                      <input class="form-control" type="text" name="cidade" placeholder="Cidade" required>
+                                  </div>
+                                  <div class="col-md-2">
+                                      <select name="uf" class="form-control" required>
+                                          <option selected disabled>UF</option>
+                                          <option disabled>----</option>
+                                          <option>SP</option>
+                                          <option>RJ</option>
+                                          <option>AC</option>
+                                          <option>AL</option>
+                                          <option>AM</option>
+                                          <option>AP</option>
+                                          <option>BA</option>
+                                          <option>CE</option>
+                                          <option>DF</option>
+                                          <option>ES</option>
+                                          <option>GO</option>
+                                          <option>MA</option>
+                                          <option>MG</option>
+                                          <option>MS</option>
+                                          <option>MT</option>
+                                          <option>PA</option>
+                                          <option>PB</option>
+                                          <option>PE</option>
+                                          <option>PI</option>
+                                          <option>PR</option>
+                                          <option>RN</option>
+                                          <option>RO</option>
+                                          <option>RR</option>
+                                          <option>RS</option>
+                                          <option>SC</option>
+                                          <option>SE</option>
+                                          <option>TO</option>
+                                      </select>
+                                  </div>
+                              </div>
+                          </div>
+                          <div class="form-group">
+                              <input class="form-control" type="text" name="codigo" placeholder="Código de rastreio" required>
+                          </div>
+                          <div class="form-group text-center">
+                              <button type="button" class="btn btn-md btn-default" data-dismiss="modal">Cancelar</button>
+                              <button type="submit" class="btn btn-md btn-primary"> Incluir </button>
+                          </div>
+                      </form>
+                  </div>
               </div>
-              <div class="form-group">
-                  <input class="form-control" type="text" name="codCliente" placeholder="Código do cliente" required>
-              </div>
-              <div class="form-group">
-                  <input class="form-control" type="text" name="nomeCliente" placeholder="Nome do cliente" required>
-              </div>
-              <div class="form-group">
-                  <input class="form-control" type="date" name="dataPostagem" placeholder="Data de postagem" required>
-              </div>
-              <div class="form-group">
-                  <input class="form-control" type="text" name="codigo" placeholder="Código de rastreio" required>
-              </div>
-              <div class="form-group text-center">
-                  <button type="button" class="btn btn-md btn-default" data-dismiss="modal">Cancelar</button>
-                  <button type="submit" class="btn btn-md btn-primary"> Incluir </button>
-              </div>
-          </form>
+          </div>
       </div>
     </div>
   </div>
