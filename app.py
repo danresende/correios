@@ -6,9 +6,9 @@
 import os
 import re
 import time
+import pyrebase
 import xml.etree.ElementTree as ET
 from zeep import Client
-from pyrebase.pyrebase import Firebase, Database, PyreResponse, convert_to_pyre
 from flask import Flask, render_template, request, jsonify, redirect, url_for
 from flask_login import (
     LoginManager,
@@ -37,22 +37,7 @@ config = {
     'storageBucket': os.environ['APP_DOMAIN'] + '.appspot.com'
 }
 
-class DB(Database):
-    def sort(self, origin, by_key, reverse=False):
-        # unpack pyre objects
-        pyres = origin.each()
-        new_list = []
-        for pyre in pyres:
-            new_list.append(pyre.item)
-        # sort
-        data = sorted(dict(new_list).items(), key=lambda item: item[1][by_key], reverse=reverse)
-        return PyreResponse(convert_to_pyre(data), origin.key())
-
-class FB(Firebase):
-    def database(self):
-        return DB(self.credentials, self.api_key, self.database_url, self.requests)
-
-firebase = FB(config)
+firebase = pyrebase.initialize_app(config)
 auth = firebase.auth()
 db = firebase.database()
 
@@ -251,4 +236,4 @@ def altera_objeto(codigo):
 ###############################################################################
 if __name__ == '__main__':
     port = int(os.environ.get('PORT', 5000))
-    app.run(host='0.0.0.0', port=port, debug=True)
+    app.run(host='0.0.0.0', port=port)

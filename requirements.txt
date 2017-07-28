@@ -22,7 +22,7 @@ protobuf==3.3.0
 pyasn1==0.2.3
 pyasn1-modules==0.0.9
 pycryptodome==3.4.3
-Pyrebase==3.0.27
+-e git+https://github.com/danresende/Pyrebase.git@3e3e20c9fb1d83bd1c7b5779596460049c3fda62#egg=Pyrebase
 python-jwt==2.0.1
 pytz==2017.2
 requests==2.11.1
