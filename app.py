@@ -6,19 +6,24 @@
 import os
 import re
 import time
+import json
 import pyrebase
 import xml.etree.ElementTree as ET
 from datetime import datetime
 from zeep import Client
-from flask import Flask, render_template, request, jsonify, redirect, url_for
-from flask_login import (
-    LoginManager,
-    UserMixin,
-    login_user,
-    logout_user,
-    login_required,
-    current_user
-)
+from flask import (Flask,
+                   flash,
+                   render_template,
+                   request,
+                   jsonify,
+                   redirect,
+                   url_for)
+from flask_login import (LoginManager,
+                         UserMixin,
+                         login_user,
+                         logout_user,
+                         login_required,
+                         current_user)
 
 ###############################################################################
 # Setup
@@ -109,7 +114,9 @@ def login():
             login_user(user)
             return redirect(url_for('objetos'))
         except Exception as e:
-            print(e)
+            mensagem = json.loads(e.strerror)['error']['message']
+            mensagem = mensagem.replace('_', ' ')
+            flash(mensagem)
             return render_template('login.html')
     else:
         return render_template('login.html')
