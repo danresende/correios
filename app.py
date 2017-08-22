@@ -8,6 +8,7 @@ import re
 import time
 import pyrebase
 import xml.etree.ElementTree as ET
+from datetime import datetime
 from zeep import Client
 from flask import Flask, render_template, request, jsonify, redirect, url_for
 from flask_login import (
@@ -161,9 +162,14 @@ def objetos():
         }
 
         # Acerta formato da data (problema com o Chrome)
-        m = re.search('([0-9]+)-([0-9]+)-([0-9]+)', request.form['dataPostagem']) 
+        m = re.search('([0-9]+)-([0-9]+)-([0-9]+)',
+                      request.form['dataPostagem'])
         if m is not None:
-            data['ult_atual'] = data['data_postagem'] = m.group(3) + '/' + m.group(2) + '/' + m.group(1)
+            data['data_postagem'] = m.group(3)
+            data['data_postagem'] = data['data_postagem'] + '/'
+            data['data_postagem'] = data['data_postagem'] + m.group(2)
+            data['data_postagem'] = data['data_postagem'] + '/'
+            data['data_postagem'] = data['data_postagem'] + m.group(1)
 
         objeto = db.child('objetos')
         objeto = objeto.child(data['codigo'])
@@ -174,9 +180,15 @@ def objetos():
         objetos = db.child('objetos')
         objetos = objetos.order_by_key()
         objetos = objetos.get(current_user.idToken)
-        objetos = db.sort(objetos, 'data_postagem', True)
         for objeto in objetos.each():
-            context.append(objeto.val())
+            objeto = dict(objeto.val())
+            objeto['data_postagem'] = datetime.strptime(
+                objeto['data_postagem'],
+                '%d/%m/%Y')
+            context.append(objeto)
+        context = sorted(context,
+                         key=lambda k: k['data_postagem'],
+                         reverse=True)
     except:
         context = []
 

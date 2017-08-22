@@ -30,7 +30,7 @@
                         <td id="nome_cli_{{ objeto['codigo'] }}">{{ objeto['nome_cliente'] }}</td>
                         <td id="cidade_{{ objeto['codigo'] }}">{{ objeto['cidade'] }}</td>
                         <td id="uf_{{ objeto['codigo'] }}">{{ objeto['uf'] }}</td>
-                        <td id="dt_{{ objeto['codigo'] }}">{{ objeto['data_postagem'] }}</td>
+                        <td id="dt_{{ objeto['codigo'] }}">{{ objeto['data_postagem'].strftime('%d/%m/%Y') }}</td>
                         <td id="cod_{{ objeto['codigo'] }}">{{ objeto['codigo'] }}</td>
                         <td id="ult_at_{{ objeto['codigo'] }}">{{ objeto['ult_atual'] }}</td>
                         <td id="stat_{{ objeto['codigo'] }}">{{ objeto['status'] }}</td>
