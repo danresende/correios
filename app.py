@@ -177,6 +177,7 @@ def objetos():
             data['data_postagem'] = data['data_postagem'] + m.group(2)
             data['data_postagem'] = data['data_postagem'] + '/'
             data['data_postagem'] = data['data_postagem'] + m.group(1)
+            data['ult_atual'] = data['data_postagem']
 
         objeto = db.child('objetos')
         objeto = objeto.child(data['codigo'])
@@ -192,6 +193,16 @@ def objetos():
             objeto['data_postagem'] = datetime.strptime(
                 objeto['data_postagem'],
                 '%d/%m/%Y')
+            objeto['ult_atual'] = datetime.strptime(
+                objeto['ult_atual'],
+                '%d/%m/%Y')
+            delta = datetime.now() - objeto['ult_atual']
+            if delta.days > 120 and \
+               objeto['status'] == 'Objeto entregue ao destinatário':
+                objeto_entregue = db.child('objetos')
+                objeto_entregue = objeto_entregue.child(objeto['codigo'])
+                objeto_entregue.remove(current_user.idToken)
+                continue
             context.append(objeto)
         context = sorted(context,
                          key=lambda k: k['data_postagem'],

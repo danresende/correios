@@ -32,7 +32,7 @@
                         <td id="uf_{{ objeto['codigo'] }}">{{ objeto['uf'] }}</td>
                         <td id="dt_{{ objeto['codigo'] }}">{{ objeto['data_postagem'].strftime('%d/%m/%Y') }}</td>
                         <td id="cod_{{ objeto['codigo'] }}">{{ objeto['codigo'] }}</td>
-                        <td id="ult_at_{{ objeto['codigo'] }}">{{ objeto['ult_atual'] }}</td>
+                        <td id="ult_at_{{ objeto['codigo'] }}">{{ objeto['ult_atual'].strftime('%d/%m/%Y') }}</td>
                         <td id="stat_{{ objeto['codigo'] }}">{{ objeto['status'] }}</td>
                         <td>
                             <a href="#" class="atualizarStatus">
