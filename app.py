@@ -197,13 +197,14 @@ def objetos():
                 objeto['ult_atual'],
                 '%d/%m/%Y')
             delta = datetime.now() - objeto['ult_atual']
+            print(delta.days)
             if delta.days > 120 and \
                objeto['status'] == 'Objeto entregue ao destinatário':
                 objeto_entregue = db.child('objetos')
                 objeto_entregue = objeto_entregue.child(objeto['codigo'])
                 objeto_entregue.remove(current_user.idToken)
-                continue
-            context.append(objeto)
+            else:
+                context.append(objeto)
         context = sorted(context,
                          key=lambda k: k['data_postagem'],
                          reverse=True)
