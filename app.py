@@ -197,7 +197,6 @@ def objetos():
                 objeto['ult_atual'],
                 '%d/%m/%Y')
             delta = datetime.now() - objeto['ult_atual']
-            print(delta.days)
             if delta.days > 120 and \
                objeto['status'] == 'Objeto entregue ao destinatário':
                 objeto_entregue = db.child('objetos')
