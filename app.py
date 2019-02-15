@@ -186,7 +186,6 @@ def objetos():
     try:
         context = []
         objetos = db.child('objetos')
-        objetos = objetos.order_by_key()
         objetos = objetos.get(current_user.idToken)
         for objeto in objetos.each():
             objeto = dict(objeto.val())
@@ -198,7 +197,7 @@ def objetos():
                 '%d/%m/%Y')
             delta = datetime.now() - objeto['ult_atual']
             if delta.days > 120 and \
-               objeto['status'] == 'Objeto entregue ao destinatário':
+               objeto['status'] == u'Objeto entregue ao destinatário':
                 objeto_entregue = db.child('objetos')
                 objeto_entregue = objeto_entregue.child(objeto['codigo'])
                 objeto_entregue.remove(current_user.idToken)
